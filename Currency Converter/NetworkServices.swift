@@ -20,17 +20,13 @@ class NetworkServices: NSObject {
         }
     }
     
-    // The request! I'm not a big fan of the nested "if let" statements, but it was the
-    // most concise way to get to the nested dictionary.
+    // The request!
     func makeRequest(forCurrency currency: String) {
         Alamofire.request("http://api.fixer.io/latest?base=\(currency)").responseJSON { response in
-            // Check to see if the response was successful...
-            if let json = response.result.value {
-                // ...and if so, cast it as a dictionary,
-                if let dictionary = json as? [String: Any] {
-                    //...and retrieve the value for "rates," which itself is a dictionary.
-                    self.exchangeRates = dictionary["rates"] as! [String : Any]?
-                }
+            // Check to see if the response was successful, and if so, cast it as a dictionary... 
+            if let json = response.result.value, let dictionary = json as? [String: Any] {
+                // ...and retrieve the value for "rates," which itself is a dictionary.
+                self.exchangeRates = dictionary["rates"] as! [String : Any]?
             }
         }
     }
